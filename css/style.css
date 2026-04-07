@@ -1,0 +1,95 @@
+/* style.css — Custom styles for AI Persona Architect */
+
+/* ===== Token Meter Colors ===== */
+.meter-green  { background: linear-gradient(90deg, #22c55e, #4ade80); }
+.meter-yellow { background: linear-gradient(90deg, #eab308, #facc15); }
+.meter-red    { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+/* ===== Copy Success Animation ===== */
+.copy-success {
+  animation: copy-pulse 0.3s ease-out;
+}
+
+@keyframes copy-pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* ===== Toast ===== */
+#toast {
+  transition: opacity 0.3s ease;
+}
+
+/* ===== Custom Scrollbar ===== */
+.vault-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.vault-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.vault-scroll::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 3px;
+}
+.dark .vault-scroll::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+/* ===== Focus Ring ===== */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+.dark input:focus-visible,
+.dark textarea:focus-visible,
+.dark select:focus-visible,
+.dark button:focus-visible {
+  outline-color: #818cf8;
+}
+
+/* ===== Toggle Switch ===== */
+.toggle-track {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: #cbd5e1;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.dark .toggle-track {
+  background: #475569;
+}
+.toggle-track.active {
+  background: #6366f1;
+}
+.dark .toggle-track.active {
+  background: #818cf8;
+}
+.toggle-knob {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle-track.active .toggle-knob {
+  transform: translateX(20px);
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

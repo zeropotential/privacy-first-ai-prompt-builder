@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Persona Architect — Token-Efficient Prompt Generator</title>
+  <meta name="description" content="Build high-fidelity, token-optimized AI system prompts using the CO-STAR-A framework. Free, private, runs entirely in your browser.">
+  <meta name="keywords" content="AI Prompt Cost Calculator, Token Efficient Prompt Generator, AI System Prompt Builder, CO-STAR prompt framework">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://example.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="AI Persona Architect — Token-Efficient Prompt Generator">
+  <meta property="og:description" content="Build high-fidelity, token-optimized AI system prompts. 100% private, runs in your browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "AI Persona Architect",
+    "description": "A free, stateless web tool to build token-optimized AI system prompts using the CO-STAR-A framework.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+          colors: {
+            vault: { light: '#f8fafc', dark: '#0f172a' },
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Prevent FOUC for dark mode -->
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col transition-colors">
+
+  <!-- Skip to content -->
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-indigo-600 text-white px-4 py-2 rounded z-50">
+    Skip to main content
+  </a>
+
+  <!-- ===== NAV BAR ===== -->
+  <header class="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <svg class="w-7 h-7 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+        </svg>
+        <h1 class="text-lg font-bold tracking-tight">
+          <span class="text-indigo-600 dark:text-indigo-400">JRQ Labs</span> AI Persona Architect
+        </h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="btn-theme" type="button" aria-label="Toggle dark mode"
+                class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors">
+        </button>
+        <button id="btn-nuke" type="button" aria-label="Clear all data"
+                class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-red-500 transition-colors"
+                title="Nuke Session — clear all data">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main" class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-6">
+
+    <!-- ===== HOW TO USE / ABOUT ===== -->
+    <section id="about" aria-label="How to use this tool" class="mb-8 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 sm:p-8">
+      <h2 class="text-xl font-bold mb-2 flex items-center gap-2">
+        <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        How It Works
+      </h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">This free tool helps you write better instructions for AI chatbots like ChatGPT, Claude, and Gemini — no technical skills needed. Just fill in a few fields and we'll build an optimized prompt for you.</p>
+
+      <!-- Steps -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
+        <div class="flex gap-3">
+          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 flex items-center justify-center font-bold text-sm">1</span>
+          <div>
+            <h3 class="font-semibold text-sm mb-1">Describe What You Need</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Use the form below to tell us <em>what</em> you want the AI to do, <em>who</em> it should sound like, and <em>how</em> you want the answer formatted. Don't worry — every field has examples to guide you.</p>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 flex items-center justify-center font-bold text-sm">2</span>
+          <div>
+            <h3 class="font-semibold text-sm mb-1">Watch It Build Live</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">As you type, the <strong>"The Vault"</strong> panel on the right shows the finished prompt in real time. You'll also see how many tokens (word-pieces) it uses and what it would cost on different AI services.</p>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 flex items-center justify-center font-bold text-sm">3</span>
+          <div>
+            <h3 class="font-semibold text-sm mb-1">Copy Your Prompt</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Happy with the result? Click the <strong>Copy</strong> button. The prompt is now on your clipboard, ready to paste.</p>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <span class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 flex items-center justify-center font-bold text-sm">4</span>
+          <div>
+            <h3 class="font-semibold text-sm mb-1">Paste Into Your AI Tool</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Open your favourite AI chatbot and paste the prompt into the message box. The AI will follow your instructions precisely — see detailed steps below.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Where to paste -->
+      <details class="group" open>
+        <summary class="cursor-pointer select-none text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+          <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          Where do I paste the prompt?
+        </summary>
+        <div class="mt-4 space-y-4">
+          <p class="text-sm text-gray-600 dark:text-gray-400">After clicking <strong>Copy</strong>, go to one of these AI chatbots and paste your prompt. Here's exactly how:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <!-- ChatGPT -->
+            <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800">
+              <h4 class="font-semibold text-sm mb-2 flex items-center gap-1.5">
+                <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                ChatGPT
+              </h4>
+              <ol class="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-decimal list-inside">
+                <li>Go to <strong>chatgpt.com</strong></li>
+                <li>Click the message box at the bottom</li>
+                <li>Paste your prompt (Ctrl+V or Cmd+V)</li>
+                <li>Press Enter — that's it!</li>
+              </ol>
+              <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">💡 For best results, paste into a <em>new chat</em> so previous messages don't interfere.</p>
+            </div>
+            <!-- Claude -->
+            <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800">
+              <h4 class="font-semibold text-sm mb-2 flex items-center gap-1.5">
+                <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
+                Claude
+              </h4>
+              <ol class="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-decimal list-inside">
+                <li>Go to <strong>claude.ai</strong></li>
+                <li>Start a new conversation</li>
+                <li>Paste your prompt into the message box</li>
+                <li>Press Enter to send</li>
+              </ol>
+              <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">💡 Claude is great with long, detailed prompts — don't be afraid to fill every field.</p>
+            </div>
+            <!-- Gemini -->
+            <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800">
+              <h4 class="font-semibold text-sm mb-2 flex items-center gap-1.5">
+                <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                Gemini
+              </h4>
+              <ol class="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-decimal list-inside">
+                <li>Go to <strong>gemini.google.com</strong></li>
+                <li>Click "New chat" in the sidebar</li>
+                <li>Paste your prompt into the text box</li>
+                <li>Press Enter to send</li>
+              </ol>
+              <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">💡 Gemini is free with a Google account — a great place to start.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- CO-STAR-A breakdown -->
+      <details class="group mt-4">
+        <summary class="cursor-pointer select-none text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+          <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          What is the CO-STAR-A framework?
+        </summary>
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm text-gray-600 dark:text-gray-400">
+          <div><span class="font-semibold text-gray-900 dark:text-gray-100">C — Context:</span> The background story. Tell the AI what situation it's helping with.</div>
+          <div><span class="font-semibold text-gray-900 dark:text-gray-100">O — Objective:</span> Your goal. What do you actually want the AI to produce?</div>
+          <div><span class="font-semibold text-gray-900 dark:text-gray-100">S — Style:</span> The expert persona. Should the AI sound like a lawyer? A marketer? A teacher?</div>
+          <div><span class="font-semibold text-gray-900 dark:text-gray-100">T — Tone:</span> The vibe. Formal for a report, casual for a blog post, persuasive for a pitch.</div>
+          <div><span class="font-semibold text-gray-900 dark:text-gray-100">A — Audience:</span> Who will read the output? The AI adjusts its language and depth to match.</div>
+          <div><span class="font-semibold text-gray-900 dark:text-gray-100">R — Response:</span> The shape of the answer — a list, a table, plain text, or even raw data (JSON).</div>
+          <div class="sm:col-span-2"><span class="font-semibold text-gray-900 dark:text-gray-100">A — Answer Constraints:</span> Any extra rules — "keep it under 200 words", "include 3 examples", "don't mention competitors".</div>
+        </div>
+      </details>
+
+      <!-- Tips -->
+      <details class="group mt-3">
+        <summary class="cursor-pointer select-none text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+          <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          Tips for getting better results
+        </summary>
+        <ul class="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-400 list-disc list-inside">
+          <li><strong>Be specific</strong> — "Write a marketing email for a yoga studio launching a beginner class" is much better than "Write an email."</li>
+          <li><strong>One goal per prompt</strong> — if you need three things, build three prompts. Trying to do everything at once confuses the AI.</li>
+          <li><strong>Try Token Saver</strong> — flip the toggle in The Vault to automatically trim filler words. This saves you money on paid AI plans without changing your instructions.</li>
+          <li><strong>Pick the right format</strong> — use Bullet Points for quick summaries, Table for comparisons, and Markdown for full articles.</li>
+          <li><strong>Start fresh often</strong> — click the 🗑️ trash icon in the top-right corner to clear everything and begin a new prompt from scratch.</li>
+        </ul>
+      </details>
+
+      <!-- Privacy note -->
+      <div class="mt-6 flex items-start gap-3 p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
+        <svg class="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        </svg>
+        <div class="text-sm text-green-800 dark:text-green-300">
+          <strong>Your privacy is protected.</strong> Everything happens right here in your browser. We don't store your data, we don't use cookies, and we don't track you. When you close this page or click the trash icon, your work is gone forever — exactly as it should be.
+        </div>
+      </div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- ===== LEFT: CO-STAR-A INPUT FORM ===== -->
+      <section aria-label="Prompt input fields">
+        <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 space-y-5">
+          <div class="flex items-center gap-2 mb-1">
+            <h2 class="text-base font-semibold">CO-STAR-A Framework</h2>
+            <span class="text-xs bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full">7 fields</span>
+          </div>
+
+          <!-- 1. Context -->
+          <div>
+            <label for="field-context" class="block text-sm font-medium mb-1">
+              Context
+              <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="Background information or scenario the AI should know about">ⓘ</span>
+            </label>
+            <textarea id="field-context" rows="3" placeholder="e.g. You are advising a Series-B SaaS startup evaluating pricing strategy…"
+                      class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm placeholder-gray-400 dark:placeholder-gray-500 resize-y"></textarea>
+          </div>
+
+          <!-- 2. Objective -->
+          <div>
+            <label for="field-objective" class="block text-sm font-medium mb-1">
+              Objective
+              <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="The main task or goal for the AI">ⓘ</span>
+            </label>
+            <textarea id="field-objective" rows="2" placeholder="e.g. Produce a competitive pricing analysis comparing freemium vs. tiered models…"
+                      class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm placeholder-gray-400 dark:placeholder-gray-500 resize-y"></textarea>
+          </div>
+
+          <!-- 3. Style (Persona) -->
+          <div>
+            <label for="field-style" class="block text-sm font-medium mb-1">
+              Style / Persona
+              <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="Choose a base persona or define your own">ⓘ</span>
+            </label>
+            <select id="field-style"
+                    class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm">
+              <option value="senior-dev">Senior Developer</option>
+              <option value="marketing-strategist">Marketing Strategist</option>
+              <option value="accountant">Senior Accountant</option>
+              <option value="data-analyst">Data Analyst</option>
+              <option value="ux-researcher">UX Researcher</option>
+              <option value="legal-advisor">Legal Advisor</option>
+              <option value="medical-consultant">Medical Consultant</option>
+              <option value="creative-writer">Creative Writer</option>
+              <option value="project-manager">Project Manager</option>
+              <option value="educator">Educator</option>
+              <option value="custom">Custom…</option>
+            </select>
+            <div id="custom-style-wrap" class="hidden mt-2">
+              <input id="field-custom-style" type="text" placeholder="e.g. Seasoned blockchain architect with DeFi expertise"
+                     class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm placeholder-gray-400 dark:placeholder-gray-500">
+            </div>
+          </div>
+
+          <!-- 4. Tone -->
+          <div>
+            <label for="field-tone" class="block text-sm font-medium mb-1">
+              Tone
+              <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="The voice and register of the AI's response">ⓘ</span>
+            </label>
+            <select id="field-tone"
+                    class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm">
+              <option value="formal">Formal</option>
+              <option value="casual">Casual</option>
+              <option value="persuasive">Persuasive</option>
+              <option value="analytical">Analytical</option>
+              <option value="empathetic">Empathetic</option>
+              <option value="authoritative">Authoritative</option>
+            </select>
+          </div>
+
+          <!-- 5. Audience -->
+          <div>
+            <label for="field-audience" class="block text-sm font-medium mb-1">
+              Audience
+              <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="Who will read or consume the AI's output">ⓘ</span>
+            </label>
+            <input id="field-audience" type="text" placeholder="e.g. Board Members, Junior Developers, General Public…"
+                   class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm placeholder-gray-400 dark:placeholder-gray-500">
+          </div>
+
+          <!-- 6. Response Format -->
+          <div>
+            <label for="field-format" class="block text-sm font-medium mb-1">
+              Response Format
+              <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="How the output should be structured">ⓘ</span>
+            </label>
+            <select id="field-format"
+                    class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm">
+              <option value="markdown">Markdown</option>
+              <option value="json">JSON</option>
+              <option value="bullet-points">Bullet Points</option>
+              <option value="numbered-list">Numbered List</option>
+              <option value="table">Table</option>
+              <option value="plain-text">Plain Text</option>
+            </select>
+          </div>
+
+          <!-- 7. Answer Constraints -->
+          <div>
+            <label for="field-constraints" class="block text-sm font-medium mb-1">
+              Answer Constraints
+              <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="Additional rules, limits, or requirements">ⓘ</span>
+            </label>
+            <textarea id="field-constraints" rows="2" placeholder="e.g. Max 500 words. Include at least 3 real-world examples. Cite sources."
+                      class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm placeholder-gray-400 dark:placeholder-gray-500 resize-y"></textarea>
+          </div>
+
+          <!-- Construct Button -->
+          <button id="btn-construct" type="button"
+                  class="w-full py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium text-sm transition-colors focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
+            Construct Final Prompt
+          </button>
+        </div>
+      </section>
+
+      <!-- ===== RIGHT: THE VAULT (Output) ===== -->
+      <section aria-label="Compiled prompt output" class="flex flex-col gap-4">
+        <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 flex flex-col flex-1">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-base font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+              The Vault
+            </h2>
+            <button id="btn-copy" type="button" aria-label="Copy prompt to clipboard"
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors">
+              <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              Copy
+            </button>
+          </div>
+
+          <!-- Preview area -->
+          <pre id="vault-preview" class="vault-scroll flex-1 min-h-[200px] max-h-[480px] overflow-y-auto rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 text-sm font-mono whitespace-pre-wrap break-words text-gray-700 dark:text-gray-300">Your compiled prompt will appear here…</pre>
+
+          <!-- Compression info -->
+          <p id="compression-info" class="hidden mt-2 text-xs text-green-600 dark:text-green-400 font-medium"></p>
+        </div>
+
+        <!-- Token Monitor -->
+        <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-semibold">Token Monitor</h3>
+            <span class="text-2xl font-bold font-mono tabular-nums" id="token-count">0</span>
+          </div>
+
+          <!-- Token Meter Bar -->
+          <div id="token-meter" class="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div id="token-meter-bar" class="h-full rounded-full transition-all duration-300 meter-green" style="width: 0%"></div>
+          </div>
+
+          <!-- Token Saver Toggle -->
+          <div class="flex items-center justify-between">
+            <label for="token-saver" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer select-none">
+              Token Saver
+              <span class="text-gray-400 dark:text-gray-500 ml-1" title="Removes linguistic fluff to reduce token count by 10–25%">ⓘ</span>
+            </label>
+            <input type="checkbox" id="token-saver" class="sr-only peer">
+            <label for="token-saver" class="toggle-track peer-checked:active" role="switch" aria-label="Toggle token saver">
+              <span class="toggle-knob"></span>
+            </label>
+          </div>
+
+          <!-- Cost Estimates -->
+          <div>
+            <h4 class="text-xs uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2">Estimated Input Cost</h4>
+            <div id="cost-list" class="space-y-1">
+              <!-- Populated by JS -->
+            </div>
+            <p id="pricing-date" class="text-xs text-gray-400 dark:text-gray-500 mt-2">Prices as of April 2026</p>
+          </div>
+        </div>
+
+        <!-- ===== Affiliate Placeholder ===== -->
+        <aside aria-label="Recommended tools" class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+          <h3 class="text-sm font-semibold mb-3">Recommended AI Tools</h3>
+          <div class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <a href="#" class="flex items-center gap-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              <span class="w-2 h-2 bg-indigo-500 rounded-full flex-shrink-0"></span>
+              Get API credits for GPT-4o →
+            </a>
+            <a href="#" class="flex items-center gap-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              <span class="w-2 h-2 bg-indigo-500 rounded-full flex-shrink-0"></span>
+              Best AI tool for this prompt →
+            </a>
+            <a href="#" class="flex items-center gap-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              <span class="w-2 h-2 bg-indigo-500 rounded-full flex-shrink-0"></span>
+              Compare AI model pricing →
+            </a>
+          </div>
+        </aside>
+
+        <!-- ===== Carbon Ads Placeholder ===== -->
+        <aside aria-label="Advertisement" class="bg-white dark:bg-gray-900 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 p-4 text-center text-xs text-gray-400 dark:text-gray-500">
+          <div id="carbon-ads-placeholder">
+            <!-- Carbon Ads script goes here -->
+            Ad space — Carbon Ads
+          </div>
+        </aside>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500 dark:text-gray-400">
+      <p>AI Persona Architect — 100% client-side. Your data never leaves your browser.</p>
+      <p>Built with the CO-STAR-A framework for token-efficient prompting.</p>
+    </div>
+  </footer>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="hidden opacity-0 fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-4 py-2.5 rounded-lg text-sm font-medium shadow-lg z-50 pointer-events-none" role="status" aria-live="polite"></div>
+
+  <!-- ===== JS ===== -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
