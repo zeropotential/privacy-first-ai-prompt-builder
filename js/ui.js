@@ -70,6 +70,7 @@ export function renderPreview() {
   if (els.tokenSaverTrack) {
     els.tokenSaverTrack.classList.toggle('active', els.tokenSaver.checked);
     els.tokenSaverTrack.setAttribute('aria-checked', String(els.tokenSaver.checked));
+    els.tokenSaverTrack.setAttribute('title', els.tokenSaver.checked ? 'Token Saver is on' : 'Token Saver is off');
   }
 
   if (els.tokenSaver.checked) {

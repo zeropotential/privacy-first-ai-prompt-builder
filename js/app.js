@@ -39,6 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Token saver toggle triggers immediate re-render
   const tokenSaver = document.getElementById('token-saver');
+  const tokenSaverTrack = document.getElementById('token-saver-track');
+  if (tokenSaverTrack && tokenSaver) {
+    tokenSaverTrack.addEventListener('click', () => {
+      tokenSaver.checked = !tokenSaver.checked;
+      renderPreview();
+    });
+  }
   if (tokenSaver) tokenSaver.addEventListener('change', renderPreview);
 
   // Style dropdown → show/hide custom input

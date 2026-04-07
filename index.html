@@ -395,10 +395,10 @@
               Token Saver
               <span class="text-gray-400 dark:text-gray-500 ml-1" title="Removes linguistic fluff to reduce token count by 10–25%">ⓘ</span>
             </label>
-            <input type="checkbox" id="token-saver" class="sr-only peer">
-            <label id="token-saver-track" for="token-saver" class="toggle-track" role="switch" aria-label="Toggle token saver">
+            <input type="checkbox" id="token-saver" class="sr-only" tabindex="-1" aria-hidden="true">
+            <button id="token-saver-track" type="button" class="toggle-track" role="switch" aria-checked="false" aria-label="Toggle token saver">
               <span class="toggle-knob"></span>
-            </label>
+            </button>
           </div>
 
           <!-- Cost Estimates -->
