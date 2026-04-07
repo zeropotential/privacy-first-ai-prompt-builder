@@ -385,6 +385,9 @@
           <div id="token-meter" class="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div id="token-meter-bar" class="h-full rounded-full transition-all duration-300 meter-green" style="width: 0%"></div>
           </div>
+          <p id="token-status" class="text-xs text-gray-500 dark:text-gray-400">
+            Estimated size of your final prompt before you paste it into an AI tool.
+          </p>
 
           <!-- Token Saver Toggle -->
           <div class="flex items-center justify-between">
@@ -393,7 +396,7 @@
               <span class="text-gray-400 dark:text-gray-500 ml-1" title="Removes linguistic fluff to reduce token count by 10–25%">ⓘ</span>
             </label>
             <input type="checkbox" id="token-saver" class="sr-only peer">
-            <label for="token-saver" class="toggle-track peer-checked:active" role="switch" aria-label="Toggle token saver">
+            <label id="token-saver-track" for="token-saver" class="toggle-track" role="switch" aria-label="Toggle token saver">
               <span class="toggle-knob"></span>
             </label>
           </div>

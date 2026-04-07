@@ -24,9 +24,11 @@ export function cacheElements() {
     tokenCount:     document.getElementById('token-count'),
     tokenMeter:     document.getElementById('token-meter'),
     tokenMeterBar:  document.getElementById('token-meter-bar'),
+    tokenStatus:    document.getElementById('token-status'),
     costList:       document.getElementById('cost-list'),
     pricingDate:    document.getElementById('pricing-date'),
     tokenSaver:     document.getElementById('token-saver'),
+    tokenSaverTrack:document.getElementById('token-saver-track'),
     compressionInfo:document.getElementById('compression-info'),
 
     // Buttons
@@ -59,13 +61,22 @@ let lastPromptText = '';
 
 export function renderPreview() {
   const fields = readFields();
-  let promptText = buildPrompt(fields);
+  const originalPromptText = buildPrompt(fields);
+  const originalTokens = countTokens(originalPromptText);
+  let promptText = originalPromptText;
   let savedPercent = 0;
+  let reducedTokens = originalTokens;
+
+  if (els.tokenSaverTrack) {
+    els.tokenSaverTrack.classList.toggle('active', els.tokenSaver.checked);
+    els.tokenSaverTrack.setAttribute('aria-checked', String(els.tokenSaver.checked));
+  }
 
   if (els.tokenSaver.checked) {
     const result = compressPrompt(promptText);
     promptText = result.compressed;
     savedPercent = result.savedPercent;
+    reducedTokens = countTokens(promptText);
   }
 
   lastPromptText = promptText;
@@ -83,6 +94,16 @@ export function renderPreview() {
   els.costList.innerHTML = costs.map(c =>
     `<div class="flex justify-between text-sm"><span class="text-gray-500 dark:text-gray-400">${escapeHtml(c.label)}</span><span class="font-mono">${escapeHtml(c.cost)}</span></div>`
   ).join('');
+
+  if (els.tokenSaver.checked) {
+    if (savedPercent > 0) {
+      els.tokenStatus.textContent = `Token Saver is on. Reduced prompt from ${originalTokens} to ${reducedTokens} tokens (${savedPercent}% saved).`;
+    } else {
+      els.tokenStatus.textContent = 'Token Saver is on, but this prompt is already concise so there was nothing useful to remove.';
+    }
+  } else {
+    els.tokenStatus.textContent = 'Estimated size of your final prompt before you paste it into an AI tool.';
+  }
 
   // Compression info
   if (els.tokenSaver.checked && savedPercent > 0) {
