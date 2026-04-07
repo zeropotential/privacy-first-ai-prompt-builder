@@ -195,14 +195,35 @@
           <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
           What is the CO-STAR-A framework?
         </summary>
-        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm text-gray-600 dark:text-gray-400">
-          <div><span class="font-semibold text-gray-900 dark:text-gray-100">C — Context:</span> The background story. Tell the AI what situation it's helping with.</div>
-          <div><span class="font-semibold text-gray-900 dark:text-gray-100">O — Objective:</span> Your goal. What do you actually want the AI to produce?</div>
-          <div><span class="font-semibold text-gray-900 dark:text-gray-100">S — Style:</span> The expert persona. Should the AI sound like a lawyer? A marketer? A teacher?</div>
-          <div><span class="font-semibold text-gray-900 dark:text-gray-100">T — Tone:</span> The vibe. Formal for a report, casual for a blog post, persuasive for a pitch.</div>
-          <div><span class="font-semibold text-gray-900 dark:text-gray-100">A — Audience:</span> Who will read the output? The AI adjusts its language and depth to match.</div>
-          <div><span class="font-semibold text-gray-900 dark:text-gray-100">R — Response:</span> The shape of the answer — a list, a table, plain text, or even raw data (JSON).</div>
-          <div class="sm:col-span-2"><span class="font-semibold text-gray-900 dark:text-gray-100">A — Answer Constraints:</span> Any extra rules — "keep it under 200 words", "include 3 examples", "don't mention competitors".</div>
+        <div class="mt-4 space-y-3 text-sm text-gray-600 dark:text-gray-400">
+          <div class="rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 p-4">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">C — Context</div>
+            <div class="mt-1">The background story. Tell the AI what situation it is helping with.</div>
+          </div>
+          <div class="rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 p-4">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">O — Objective</div>
+            <div class="mt-1">Your goal. What do you want the AI to produce or help you do?</div>
+          </div>
+          <div class="rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 p-4">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">S — Style</div>
+            <div class="mt-1">The expert persona. Should the AI sound like a lawyer, marketer, teacher, or something custom?</div>
+          </div>
+          <div class="rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 p-4">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">T — Tone</div>
+            <div class="mt-1">The vibe of the answer. Formal for reports, casual for friendly writing, persuasive for sales, analytical for logic-heavy tasks.</div>
+          </div>
+          <div class="rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 p-4">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">A — Audience</div>
+            <div class="mt-1">Who will read the output? This helps the AI choose the right level of detail and language.</div>
+          </div>
+          <div class="rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 p-4">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">R — Response</div>
+            <div class="mt-1">The shape of the answer: a list, a table, plain text, Markdown, or structured JSON.</div>
+          </div>
+          <div class="rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 p-4">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">A — Answer Constraints</div>
+            <div class="mt-1">Extra rules like word limits, examples to include, things to avoid, or formatting rules.</div>
+          </div>
         </div>
       </details>
 
@@ -250,10 +271,16 @@
             Not sure where to begin? Write a simple sentence in <strong>Objective</strong> like: “Write a welcome email for new customers.” Then add who it is for in <strong>Audience</strong>.
           </div>
 
+          <div class="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 pt-1">
+            <span class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></span>
+            Start Here
+            <span class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></span>
+          </div>
+
           <!-- 1. Context -->
           <div>
             <label for="field-context" class="block text-sm font-medium mb-1">
-              Context
+              Context <span class="text-gray-400 dark:text-gray-500 font-normal">· What's the situation?</span>
               <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="Background information or scenario the AI should know about">ⓘ</span>
             </label>
             <textarea id="field-context" rows="3" placeholder="e.g. You are advising a Series-B SaaS startup evaluating pricing strategy…"
@@ -263,17 +290,33 @@
           <!-- 2. Objective -->
           <div>
             <label for="field-objective" class="block text-sm font-medium mb-1">
-              Objective
+              Objective <span class="text-gray-400 dark:text-gray-500 font-normal">· What should the AI do?</span>
               <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="The main task or goal for the AI">ⓘ</span>
             </label>
             <textarea id="field-objective" rows="2" placeholder="e.g. Produce a competitive pricing analysis comparing freemium vs. tiered models…"
                       class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm placeholder-gray-400 dark:placeholder-gray-500 resize-y"></textarea>
           </div>
 
-          <!-- 3. Style (Persona) -->
+          <!-- 3. Audience -->
+          <div>
+            <label for="field-audience" class="block text-sm font-medium mb-1">
+              Audience <span class="text-gray-400 dark:text-gray-500 font-normal">· Who is this for?</span>
+              <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="Who will read or consume the AI's output">ⓘ</span>
+            </label>
+            <input id="field-audience" type="text" placeholder="e.g. Board Members, Junior Developers, General Public…"
+                   class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm placeholder-gray-400 dark:placeholder-gray-500">
+          </div>
+
+          <div class="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 pt-1">
+            <span class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></span>
+            Refine The Output
+            <span class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></span>
+          </div>
+
+          <!-- 4. Style (Persona) -->
           <div>
             <label for="field-style" class="block text-sm font-medium mb-1">
-              Style / Persona
+              Style / Persona <span class="text-gray-400 dark:text-gray-500 font-normal">· What kind of expert should it sound like?</span>
               <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="Choose a base persona or define your own">ⓘ</span>
             </label>
             <select id="field-style"
@@ -296,10 +339,10 @@
             </div>
           </div>
 
-          <!-- 4. Tone -->
+          <!-- 5. Tone -->
           <div>
             <label for="field-tone" class="block text-sm font-medium mb-1">
-              Tone
+              Tone <span class="text-gray-400 dark:text-gray-500 font-normal">· How should it feel?</span>
               <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="The voice and register of the AI's response">ⓘ</span>
             </label>
             <select id="field-tone"
@@ -313,20 +356,10 @@
             </select>
           </div>
 
-          <!-- 5. Audience -->
-          <div>
-            <label for="field-audience" class="block text-sm font-medium mb-1">
-              Audience
-              <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="Who will read or consume the AI's output">ⓘ</span>
-            </label>
-            <input id="field-audience" type="text" placeholder="e.g. Board Members, Junior Developers, General Public…"
-                   class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm placeholder-gray-400 dark:placeholder-gray-500">
-          </div>
-
           <!-- 6. Response Format -->
           <div>
             <label for="field-format" class="block text-sm font-medium mb-1">
-              Response Format
+              Response Format <span class="text-gray-400 dark:text-gray-500 font-normal">· What shape should the answer take?</span>
               <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="How the output should be structured">ⓘ</span>
             </label>
             <select id="field-format"
@@ -343,7 +376,7 @@
           <!-- 7. Answer Constraints -->
           <div>
             <label for="field-constraints" class="block text-sm font-medium mb-1">
-              Answer Constraints
+              Answer Constraints <span class="text-gray-400 dark:text-gray-500 font-normal">· Any rules or limits?</span>
               <span class="text-gray-400 dark:text-gray-500 font-normal ml-1" title="Additional rules, limits, or requirements">ⓘ</span>
             </label>
             <textarea id="field-constraints" rows="2" placeholder="e.g. Max 500 words. Include at least 3 real-world examples. Cite sources."
@@ -356,6 +389,7 @@
             Refresh Final Prompt
           </button>
           <p class="text-xs text-gray-500 dark:text-gray-400 text-center">You usually do not need this button. The final prompt updates automatically as you type.</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 text-center">Tip: If you are stuck, fill only the first 3 fields. The other fields are optional refinements.</p>
         </div>
       </section>
 
