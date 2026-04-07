@@ -70,7 +70,7 @@ export function renderPreview() {
   if (els.tokenSaverTrack) {
     els.tokenSaverTrack.classList.toggle('active', els.tokenSaver.checked);
     els.tokenSaverTrack.setAttribute('aria-checked', String(els.tokenSaver.checked));
-    els.tokenSaverTrack.setAttribute('title', els.tokenSaver.checked ? 'Token Saver is on' : 'Token Saver is off');
+    els.tokenSaverTrack.setAttribute('title', els.tokenSaver.checked ? 'Shorten Prompt is on' : 'Shorten Prompt is off');
   }
 
   if (els.tokenSaver.checked) {
@@ -98,9 +98,9 @@ export function renderPreview() {
 
   if (els.tokenSaver.checked) {
     if (savedPercent > 0) {
-      els.tokenStatus.textContent = `Token Saver is on. Reduced prompt from ${originalTokens} to ${reducedTokens} tokens (${savedPercent}% saved).`;
+      els.tokenStatus.textContent = `Shorten Prompt is on. Reduced prompt from ${originalTokens} to ${reducedTokens} tokens (${savedPercent}% saved).`;
     } else {
-      els.tokenStatus.textContent = 'Token Saver is on, but this prompt is already concise so there was nothing useful to remove.';
+      els.tokenStatus.textContent = 'Shorten Prompt is on, but this prompt is already concise so there was nothing useful to remove.';
     }
   } else {
     els.tokenStatus.textContent = 'Estimated size of your final prompt before you paste it into an AI tool.';
@@ -108,7 +108,7 @@ export function renderPreview() {
 
   // Compression info
   if (els.tokenSaver.checked && savedPercent > 0) {
-    els.compressionInfo.textContent = `Token Saver reduced ${savedPercent}% of tokens`;
+    els.compressionInfo.textContent = `Shorten Prompt reduced ${savedPercent}% of tokens`;
     els.compressionInfo.classList.remove('hidden');
   } else {
     els.compressionInfo.classList.add('hidden');
@@ -199,8 +199,10 @@ export function handleStyleChange() {
 // --- Dark mode ---
 export function initTheme() {
   const stored = localStorage.getItem('theme');
-  if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  if (stored !== 'light') {
     document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
   }
   updateThemeIcon();
 }
