@@ -1,0 +1,8 @@
+jrqlabs.cloud, www.jrqlabs.cloud {
+  encode zstd gzip
+  reverse_proxy web:80
+}
+
+http://72.62.254.225 {
+  redir https://jrqlabs.cloud{uri} 301
+}
