@@ -97,17 +97,53 @@ export function renderPreview() {
 export async function copyToClipboard() {
   if (!lastPromptText) return;
   try {
-    await navigator.clipboard.writeText(lastPromptText);
-    els.btnCopy.classList.add('copy-success');
-    els.btnCopy.innerHTML = `<svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Copied!`;
-    showToast('Prompt copied to clipboard');
-    setTimeout(() => {
-      els.btnCopy.classList.remove('copy-success');
-      els.btnCopy.innerHTML = `<svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Copy`;
-    }, 2000);
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(lastPromptText);
+    } else {
+      const copied = fallbackCopyText(lastPromptText);
+      if (!copied) throw new Error('Clipboard fallback failed');
+    }
+    showCopySuccess();
   } catch {
-    showToast('Failed to copy — try manually selecting the text');
+    // Final fallback for browsers that block clipboard APIs.
+    const copied = fallbackCopyText(lastPromptText);
+    if (copied) {
+      showCopySuccess();
+      return;
+    }
+    showToast('Failed to copy. Please select text in The Vault and press Ctrl/Cmd + C.');
   }
+}
+
+function showCopySuccess() {
+  els.btnCopy.classList.add('copy-success');
+  els.btnCopy.innerHTML = `<svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Copied!`;
+  showToast('Prompt copied to clipboard');
+  setTimeout(() => {
+    els.btnCopy.classList.remove('copy-success');
+    els.btnCopy.innerHTML = `<svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Copy`;
+  }, 2000);
+}
+
+function fallbackCopyText(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  ta.style.top = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  ta.setSelectionRange(0, ta.value.length);
+  let ok = false;
+  try {
+    ok = document.execCommand('copy');
+  } catch {
+    ok = false;
+  }
+  document.body.removeChild(ta);
+  return ok;
 }
 
 // --- Nuke Session ---
